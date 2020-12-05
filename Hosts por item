@@ -1,7 +1,8 @@
-select distinct h.host, i2.ip, i."name"
+select distinct h.host, i2.ip, count(i."name") as total
 	from items i 
 		left join hosts h on
 		(i.hostid = h.hostid)
 		left join interface i2 on 
 		(i2.hostid = i.hostid)
 			where i."name" ilike '%stations con%'
+			group by h.host, i2.ip 
