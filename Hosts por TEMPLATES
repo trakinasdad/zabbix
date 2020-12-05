@@ -1,0 +1,13 @@
+select distinct h.host, h3."name" as nome_host, i.ip, h2."name" as GRUPO_HOSTS 
+	from hosts_templates as ht 
+		left join hosts h on 
+		(h.hostid = ht.hostid)
+		left join interface i on 
+		(i.hostid = h.hostid)
+		left join hosts_groups hg on 
+		(hg.hostid = h.hostid)
+		inner join hstgrp h2 on 
+		(h2.groupid = hg.groupid)
+		inner join hosts h3 on 
+		(h3.hostid = ht.templateid)
+			where i.ip is not null 
