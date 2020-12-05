@@ -1,8 +1,15 @@
-select distinct h.host, i2.ip, count(i."name") as total
-	from items i 
-		left join hosts h on
+select distinct h.host, h3."name" as nome_host, i.ip, h2."name" as GRUPO_HOSTS, i2.itemid, i2."name" 
+	from hosts_templates as ht 
+		left join hosts h on 
+		(h.hostid = ht.hostid)
+		left join interface i on 
 		(i.hostid = h.hostid)
-		left join interface i2 on 
-		(i2.hostid = i.hostid)
-			where i."name" ilike '%stations con%'
-			group by h.host, i2.ip 
+		left join hosts_groups hg on 
+		(hg.hostid = h.hostid)
+		inner join hstgrp h2 on 
+		(h2.groupid = hg.groupid)
+		inner join hosts h3 on 
+		(h3.hostid = ht.templateid)
+		left join items i2 on 
+		(i2.hostid = ht.hostid)
+		where i2."name" ilike '%stations con%' and i.ip is not null 
